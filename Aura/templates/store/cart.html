@@ -1,0 +1,119 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Your Cart | Aura Apparels{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">Your Shopping Cart</h1>
+    
+    {% if cart_items %}
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Cart Items ({{ cart_items|length }})</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Total</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in cart_items %}
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            {% if item.product.image %}
+                                            <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="img-fluid me-3" style="max-width: 60px;">
+                                            {% endif %}
+                                            <div>
+                                                <h6 class="mb-0">{{ item.product.name }}</h6>
+                                                <small class="text-muted">{{ item.product.category.name }}</small>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>₹{{ item.product.price }}</td>
+                                    <td>
+                                        <form method="post" action="{% url 'update_cart' item.id %}" class="d-flex align-items-center">
+                                            {% csrf_token %}
+                                            <input type="number" name="quantity" value="{{ item.quantity }}" min="1" max="10" class="form-control form-control-sm" style="width: 70px;">
+                                            <button type="submit" class="btn btn-sm btn-outline-secondary ms-2">
+                                                <i class="fa-solid fa-arrows-rotate"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                    <td>₹{{ item.get_total }}</td>
+                                    <td>
+                                        <a href="{% url 'remove_from_cart' item.id %}" class="btn btn-sm btn-danger">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="d-flex justify-content-between">
+                <a href="{% url 'shop' %}" class="btn btn-outline-secondary">
+                    <i class="fa-solid fa-arrow-left"></i> Continue Shopping
+                </a>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Order Summary</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Subtotal:</span>
+                        <span>₹{{ cart.get_cart_subtotal }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Shipping:</span>
+                        <span>{% if cart.get_shipping_cost == 0 %}Free{% else %}₹{{ cart.get_shipping_cost }}{% endif %}</span>
+                    </div>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>Tax (GST)</span>
+                        <span>₹{{ cart.get_tax }}</span>
+                    </li>
+                    <hr>
+                    <div class="d-flex justify-content-between mb-3">
+                        <strong>Total:</strong>
+                        <strong>₹{{ cart.get_cart_total }}</strong>
+                    </div>
+                    
+                    <div class="d-grid">
+                        <a href="{% url 'checkout' %}" class="btn btn-primary">
+                            Proceed to Checkout
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="text-center py-5">
+        <div class="mb-4">
+            <i class="fa-solid fa-cart-shopping" style="font-size: 5rem;"></i>
+        </div>
+        <h3>Your cart is empty</h3>
+        <p class="text-muted">Looks like you haven't added any products to your cart yet.</p>
+        <a href="{% url 'shop' %}" class="btn btn-primary mt-3">
+            Start Shopping
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

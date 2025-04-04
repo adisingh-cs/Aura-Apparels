@@ -1,0 +1,202 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Checkout | AURA APPARELS{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="my-3">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'cart' %}">Cart</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Checkout</li>
+        </ol>
+    </nav>
+    
+    <div class="row">
+        <div class="col-12">
+            <h1 class="mb-4">Checkout</h1>
+        </div>
+    </div>
+    
+    <div class="row">
+        <!-- Checkout Form -->
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Shipping Information</h5>
+                </div>
+                <div class="card-body">
+                    <form action="{% url 'place_order' %}" method="post" id="checkoutForm">
+                        {% csrf_token %}
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="full_name" class="form-label">Full Name <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="full_name" name="full_name" value="{{ request.user.get_full_name }}" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
+                                <input type="email" class="form-control" id="email" name="email" value="{{ request.user.email }}" required>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">Phone Number <span class="text-danger">*</span></label>
+                            <input type="tel" class="form-control" id="phone" name="phone" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="address" class="form-label">Address <span class="text-danger">*</span></label>
+                            <textarea class="form-control" id="address" name="address" rows="3" required></textarea>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="city" class="form-label">City <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="city" name="city" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="state" class="form-label">State <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="state" name="state" required>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="pincode" class="form-label">PIN Code <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="pincode" name="pincode" required>
+                        </div>
+                        
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg">Proceed</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Order Summary -->
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Order Summary</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        {% for item in cart_items %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="my-0">{{ item.product.name }}</h6>
+                                    <small class="text-muted">Quantity: {{ item.quantity }}</small>
+                                </div>
+                                <span class="text-muted">₹{{ item.get_total }}</span>
+                            </li>
+                        {% endfor %}
+                        
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>Subtotal</span>
+                            <span>₹{{ cart.get_cart_subtotal }}</span>
+                        </li>
+                        
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>Shipping</span>
+                            <span>₹{{ cart.get_shipping_cost }}</span>
+                        </li>
+                        
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>Tax (GST)</span>
+                            <span>₹{{ cart.get_tax }}</span>
+                        </li>
+                        
+                        <li class="list-group-item d-flex justify-content-between fw-bold">
+                            <span>Total</span>
+                            <span>₹{{ cart.get_cart_total }}</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Promo Code</h5>
+                </div>
+                <div class="card-body">
+                    <form>
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" placeholder="Enter code" disabled>
+                            <button class="btn btn-outline-secondary" type="button" disabled>Apply</button>
+                        </div>
+                        <small class="text-muted">Promo codes coming soon!</small>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Payment Modal -->
+<div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="paymentModalLabel">Order Confirmation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <i class="fas fa-check-circle text-success fa-4x mb-3"></i>
+                <h4>Thank You for Your Order!</h4>
+                <p>Your order has been placed successfully.</p>
+                <p>We will call you soon for order confirmation and payment process.</p>
+                <div class="alert alert-info">
+                    <p class="mb-0">Redirecting to order complete page...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block extra_js %}
+<script>
+    document.getElementById('checkoutForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+    
+        const paymentModalElement = document.getElementById('paymentModal');
+        const paymentModal = new bootstrap.Modal(paymentModalElement);
+        let hasRedirected = false;
+    
+        // Handle redirect
+        function redirectNow(url) {
+            if (!hasRedirected) {
+                hasRedirected = true;
+                window.location.href = url;
+            }
+        }
+    
+        // Submit form data
+        fetch(this.action, {
+            method: 'POST',
+            body: new FormData(this),
+            headers: {
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Show the modal
+                paymentModal.show();
+    
+                // Redirect after 4700ms if not already redirected
+                setTimeout(() => {
+                    redirectNow(data.redirect_url);
+                }, 4700);
+    
+                // Redirect immediately if modal is closed before 4700ms
+                paymentModalElement.addEventListener('hidden.bs.modal', () => {
+                    redirectNow(data.redirect_url);
+                });
+            }
+        });
+    });
+    </script>
+
+{% endblock %}

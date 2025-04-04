@@ -1,0 +1,99 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Order Complete | AURA APPARELS{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="my-3">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'shop' %}">Shop</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Order Complete</li>
+        </ol>
+    </nav>
+    
+    <div class="row mb-5">
+        <div class="col-md-8 mx-auto">
+            <div class="card">
+                <div class="card-header bg-success text-white text-center">
+                    <h4 class="mb-0">Thank You for Your Order!</h4>
+                </div>
+                <div class="card-body">
+                    <div class="text-center mb-4">
+                        <i class="fas fa-check-circle text-success fa-5x mb-3"></i>
+                        <h5>Your order has been placed successfully.</h5>
+                        <h6>We'll Contact you soon for Order Confirmation & Payment Procedure</h6>
+                        <p class="mb-0">Order Number: <strong>#{{ order.id }}</strong></p>
+                        <p>Date: <strong>{{ order.created_at|date:"F d, Y" }}</strong></p>
+                    </div>
+                    
+                    <div class="alert alert-info">
+                        <p class="mb-0">A confirmation email has been sent to <strong>{{ order.email }}</strong>.</p>
+                    </div>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0">Order Details</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <h6>Shipping Information:</h6>
+                                    <p class="mb-0">{{ order.full_name }}</p>
+                                    <p class="mb-0">{{ order.address }}</p>
+                                    <p class="mb-0">{{ order.city }}, {{ order.state }} - {{ order.pincode }}</p>
+                                    <p class="mb-0">Phone: {{ order.phone }}</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6>Order Summary:</h6>
+                                    <p class="mb-0">Order Status: <span class="badge bg-{{ order.order_status|lower }}">{{ order.order_status }}</span></p>
+                                    <p class="mb-0">Payment Method: {{ order.payment_method|title }}</p>
+                                    <p class="mb-0">Payment Status: <span class="badge bg-{{ order.payment_status|lower }}">{{ order.payment_status|title }}</span></p>
+                                </div>
+                            </div>
+                            
+                            <h6>Ordered Items:</h6>
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Product</th>
+                                            <th>Price</th>
+                                            <th>Quantity</th>
+                                            <th>Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for item in order_items %}
+                                            <tr>
+                                                <td>{{ item.product.name }}</td>
+                                                <td>₹{{ item.price }}</td>
+                                                <td>{{ item.quantity }}</td>
+                                                <td>₹{{ item.get_total }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                        <tr>
+                                            <td colspan="3" class="text-end fw-bold">Grand Total:</td>
+                                            <td class="fw-bold">₹{{ order.total_amount }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between">
+                        <a href="{% url 'shop' %}" class="btn btn-outline-primary">
+                            <i class="fas fa-arrow-left me-2"></i> Continue Shopping
+                        </a>
+                        <a href="{% url 'download_receipt' order.id %}" class="btn btn-primary">
+                            <i class="fas fa-download me-2"></i> Download Receipt
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

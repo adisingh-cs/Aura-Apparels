@@ -1,0 +1,867 @@
+/* 
+   AURA APPARELS Dark Mode CSS
+   Enhanced visibility for dark mode
+*/
+
+/* Dark Mode Base */
+body.dark-mode {
+    background-color: #121212;
+    color: #f8f9fa;
+}
+
+/* Dark Mode Navbar */
+body.dark-mode .navbar,
+body.dark-mode .dropdown-menu {
+    background-color: #1e1e1e !important;
+    border-color: #333;
+}
+
+body.dark-mode .navbar-light .navbar-nav .nav-link,
+body.dark-mode .navbar-light .navbar-brand {
+    color: #f8f9fa !important;
+}
+
+body.dark-mode .navbar-toggler-icon {
+    filter: invert(1);
+}
+
+/* Dark Mode Cards */
+body.dark-mode .card {
+    background-color: #1e1e1e;
+    border-color: #333;
+    color: #f8f9fa;
+}
+
+body.dark-mode .card-header,
+body.dark-mode .card-footer {
+    background-color: #252525;
+    border-color: #333;
+}
+
+/* Dark Mode Forms */
+body.dark-mode .form-control,
+body.dark-mode .form-select {
+    background-color: #333;
+    border-color: #444;
+    color: #f8f9fa;
+}
+
+body.dark-mode .form-control:focus,
+body.dark-mode .form-select:focus {
+    background-color: #3a3a3a;
+    border-color: #bb86fc;
+    box-shadow: 0 0 0 0.25rem rgba(187, 134, 252, 0.25);
+}
+
+body.dark-mode .form-check-input {
+    background-color: #333;
+    border-color: #444;
+}
+
+body.dark-mode .form-check-input:checked {
+    background-color: #bb86fc;
+    border-color: #bb86fc;
+}
+
+body.dark-mode .form-text {
+    color: #adb5bd !important;
+}
+
+/* Dark Mode Buttons */
+body.dark-mode .btn-outline-primary {
+    color: #bb86fc;
+    border-color: #bb86fc;
+}
+
+body.dark-mode .btn-outline-primary:hover {
+    background-color: #bb86fc;
+    border-color: #bb86fc;
+    color: #121212;
+}
+
+body.dark-mode .btn-primary {
+    background-color: #bb86fc;
+    border-color: #bb86fc;
+    color: #121212;
+}
+
+body.dark-mode .btn-primary:hover {
+    background-color: #a370f7;
+    border-color: #a370f7;
+    color: #121212;
+}
+
+body.dark-mode .btn-outline-secondary {
+    color: #e0e0e0;  /* Lighter color for better visibility */
+    border-color: #555;  /* Darker border for better contrast */
+}
+
+body.dark-mode .btn-outline-secondary:hover {
+    background-color: #444;
+    border-color: #666;
+    color: #ffffff;  /* Pure white for maximum visibility */
+}
+
+body.dark-mode .btn-secondary {
+    background-color: #444;
+    border-color: #555;
+    color: #ffffff;  /* Ensure text is visible */
+}
+
+body.dark-mode .btn-secondary:hover {
+    background-color: #555;
+    border-color: #666;
+}
+
+body.dark-mode .btn-danger {
+    background-color: #cf6679;  /* Material Design dark theme error color */
+    border-color: #cf6679;
+    color: #121212;  /* Dark text for contrast */
+}
+
+body.dark-mode .btn-danger:hover {
+    background-color: #b55a6a;
+    border-color: #b55a6a;
+}
+
+body.dark-mode .btn-success {
+    background-color: #03dac6;  /* Material Design dark theme success color */
+    border-color: #03dac6;
+    color: #121212;
+}
+
+body.dark-mode .btn-success:hover {
+    background-color: #00c4b4;
+    border-color: #00c4b4;
+}
+
+body.dark-mode .btn-warning {
+    background-color: #ffb74d;
+    border-color: #ffb74d;
+    color: #121212;
+}
+
+body.dark-mode .btn-warning:hover {
+    background-color: #ffa726;
+    border-color: #ffa726;
+}
+
+body.dark-mode .btn-info {
+    background-color: #64b5f6;
+    border-color: #64b5f6;
+    color: #121212;
+}
+
+body.dark-mode .btn-info:hover {
+    background-color: #42a5f5;
+    border-color: #42a5f5;
+}
+
+/* Dark Mode List Groups */
+body.dark-mode .list-group-item {
+    background-color: #1e1e1e;
+    border-color: #333;
+    color: #f8f9fa;
+}
+
+body.dark-mode .list-group-item.active {
+    background-color: #bb86fc;
+    border-color: #bb86fc;
+    color: #121212;
+}
+
+body.dark-mode .list-group-item-action:hover {
+    background-color: #2a2a2a;
+    color: #f8f9fa;
+}
+
+/* Dark Mode Tables */
+body.dark-mode .table {
+    color: #f8f9fa;
+    border-color: #333;
+}
+
+body.dark-mode .table-striped > tbody > tr:nth-of-type(odd) > * {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: #f8f9fa;
+}
+
+body.dark-mode .table-hover > tbody > tr:hover > * {
+    background-color: rgba(255, 255, 255, 0.075);
+    color: #f8f9fa;
+}
+
+body.dark-mode .table thead th {
+    background-color: #252525;  /* Slightly lighter than card background */
+    color: #bb86fc;  /* Primary color for headers */
+    border-color: #333;
+}
+
+/* Dark Mode Pagination */
+body.dark-mode .page-link {
+    background-color: #1e1e1e;
+    border-color: #333;
+    color: #f8f9fa;
+}
+
+body.dark-mode .page-link:hover {
+    background-color: #2a2a2a;
+    border-color: #444;
+    color: #f8f9fa;
+}
+
+body.dark-mode .page-item.active .page-link {
+    background-color: #bb86fc;
+    border-color: #bb86fc;
+    color: #121212;
+}
+
+body.dark-mode .page-item.disabled .page-link {
+    background-color: #1e1e1e;
+    border-color: #333;
+    color: #6c757d;
+}
+
+/* Dark Mode Dropdown */
+body.dark-mode .dropdown-item {
+    color: #f8f9fa;
+}
+
+body.dark-mode .dropdown-item:hover,
+body.dark-mode .dropdown-item:focus {
+    background-color: #2a2a2a;
+    color: #f8f9fa;
+}
+
+body.dark-mode .dropdown-divider {
+    border-color: #444;
+}
+
+/* Dark Mode Alerts */
+body.dark-mode .alert {
+    border-color: #333;
+}
+
+body.dark-mode .alert-info {
+    background-color: #1a3c4d;
+    color: #9eeaf9;
+}
+
+body.dark-mode .alert-success {
+    background-color: #1a472a;
+    color: #8eeab0;
+}
+
+body.dark-mode .alert-warning {
+    background-color: #4d3a10;
+    color: #ffe484;
+}
+
+body.dark-mode .alert-danger {
+    background-color: #4d1a1a;
+    color: #f9a8a8;
+}
+
+/* Dark Mode Badges */
+body.dark-mode .badge.bg-success {
+    background-color: #03dac6 !important;  /* Material Design dark theme success color */
+    color: #121212;
+}
+
+body.dark-mode .badge.bg-danger {
+    background-color: #cf6679 !important;  /* Material Design dark theme error color */
+    color: #121212;
+}
+
+body.dark-mode .badge.bg-primary {
+    background-color: #bb86fc !important;  /* Material Design dark theme primary color */
+    color: #121212;
+}
+
+body.dark-mode .badge.bg-warning {
+    background-color: #ffb74d !important;
+    color: #121212;
+}
+
+body.dark-mode .badge.bg-info {
+    background-color: #64b5f6 !important;
+    color: #121212;
+}
+
+body.dark-mode .badge.bg-secondary {
+    background-color: #747474 !important;
+    color: #f8f9fa;
+}
+
+/* Dark Mode Text */
+body.dark-mode .text-muted {
+    color: #bdbdbd !important;  /* Lighter muted text for better visibility */
+}
+
+body.dark-mode .text-dark {
+    color: #f8f9fa !important;
+}
+
+body.dark-mode .text-primary {
+    color: #bb86fc !important;
+}
+
+body.dark-mode .text-success {
+    color: #03dac6 !important;
+}
+
+body.dark-mode .text-danger {
+    color: #cf6679 !important;
+}
+
+body.dark-mode .text-warning {
+    color: #ffb74d !important;
+}
+
+body.dark-mode .text-info {
+    color: #64b5f6 !important;
+}
+
+/* Dark Mode Links */
+body.dark-mode a {
+    color: #bb86fc;
+}
+
+body.dark-mode a:hover {
+    color: #a370f7;
+    text-decoration: underline;
+}
+
+/* Dark Mode Footer */
+body.dark-mode footer {
+    background-color: #0d0d0d;
+}
+
+body.dark-mode footer .text-white {
+    color: #f8f9fa !important;
+}
+
+body.dark-mode .social-icons a {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .social-icons a:hover {
+    background-color: #bb86fc;
+    color: #121212;
+}
+
+/* Dark Mode Focus Styles */
+body.dark-mode *:focus {
+    outline-color: #bb86fc;
+}
+
+/* Dark Mode Placeholders */
+body.dark-mode ::placeholder {
+    color: #bdbdbd !important;  /* Lighter placeholder color */
+    opacity: 0.7;
+}
+
+/* Dark Mode Scrollbar */
+body.dark-mode::-webkit-scrollbar {
+    width: 12px;
+}
+
+body.dark-mode::-webkit-scrollbar-track {
+    background: #1e1e1e;
+}
+
+body.dark-mode::-webkit-scrollbar-thumb {
+    background-color: #444;
+    border-radius: 6px;
+    border: 3px solid #1e1e1e;
+}
+
+body.dark-mode::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+}
+
+/* Dark Mode Input Focus */
+body.dark-mode .form-control:focus,
+body.dark-mode .form-select:focus,
+body.dark-mode .btn:focus {
+    box-shadow: 0 0 0 0.25rem rgba(187, 134, 252, 0.4);
+}
+
+/* Dark Mode Custom Elements */
+body.dark-mode .product-card {
+    background-color: #1e1e1e;
+    border-color: #333;
+}
+
+body.dark-mode .product-card:hover {
+    box-shadow: 0 0.5rem 1rem rgba(187, 134, 252, 0.15);
+    border-color: #bb86fc;
+}
+
+body.dark-mode .product-price {
+    color: #03dac6;  /* Highlight prices with the secondary color */
+}
+
+body.dark-mode .nav-tabs .nav-link {
+    color: #f8f9fa;
+    border-color: #333 #333 transparent;
+}
+
+body.dark-mode .nav-tabs .nav-link.active {
+    color: #bb86fc;
+    background-color: #1e1e1e;
+    border-color: #bb86fc #bb86fc #1e1e1e;
+}
+
+body.dark-mode .nav-tabs {
+    border-bottom-color: #333;
+}
+
+/* Dark Mode Modal */
+body.dark-mode .modal-content {
+    background-color: #1e1e1e;
+    border-color: #333;
+}
+
+body.dark-mode .modal-header,
+body.dark-mode .modal-footer {
+    border-color: #333;
+}
+
+body.dark-mode .modal-title {
+    color: #f8f9fa;
+}
+
+body.dark-mode .close {
+    color: #f8f9fa;
+    text-shadow: none;
+}
+
+/* Improved Visibility for Form Controls */
+body.dark-mode .form-control::placeholder {
+    color: #aaa !important;
+}
+
+body.dark-mode input[type="checkbox"],
+body.dark-mode input[type="radio"] {
+    border: 1px solid #666;
+}
+
+/* Dark Mode Bootstrap Icons */
+body.dark-mode .bi {
+    color: #f8f9fa;
+}
+
+/* Dark Mode Tooltips */
+body.dark-mode .tooltip .tooltip-inner {
+    background-color: #bb86fc;
+    color: #121212;
+}
+
+body.dark-mode .tooltip .tooltip-arrow::before {
+    border-top-color: #bb86fc;
+}
+
+/* Dark Mode HR */
+body.dark-mode hr {
+    border-color: #444;
+}
+
+/* Improved Visibility for Small Text */
+body.dark-mode small,
+body.dark-mode .small {
+    color: #bdbdbd;
+}
+
+/* Dark Mode Accordion */
+body.dark-mode .accordion-button {
+    background-color: #1e1e1e;
+    color: #f8f9fa;
+    border-color: #333;
+}
+
+body.dark-mode .accordion-button:not(.collapsed) {
+    background-color: #252525;
+    color: #bb86fc;
+}
+
+body.dark-mode .accordion-body {
+    background-color: #1e1e1e;
+    border-color: #333;
+}
+
+/* Dark Mode Progress Bars */
+body.dark-mode .progress {
+    background-color: #333;
+}
+
+body.dark-mode .progress-bar {
+    background-color: #bb86fc;
+    color: #121212;
+}
+
+/* Dark Mode Breadcrumbs */
+body.dark-mode .breadcrumb {
+    background-color: #252525;
+}
+
+body.dark-mode .breadcrumb-item.active {
+    color: #bdbdbd;
+}
+
+body.dark-mode .breadcrumb-item + .breadcrumb-item::before {
+    color: #adb5bd;
+}
+
+/* Dark Mode Carousel */
+body.dark-mode .carousel-caption {
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 0.25rem;
+    padding: 1rem;
+}
+
+body.dark-mode .carousel-control-prev-icon,
+body.dark-mode .carousel-control-next-icon {
+    filter: none;
+}
+
+body.dark-mode .carousel-indicators button {
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+body.dark-mode .carousel-indicators .active {
+    background-color: #bb86fc;
+}
+
+/* Dark Mode Figure Caption */
+body.dark-mode figcaption {
+    color: #bdbdbd;
+}
+
+/* Dark Mode Address */
+body.dark-mode address {
+    color: #f8f9fa;
+}
+
+/* Dark Mode Blockquote */
+body.dark-mode blockquote {
+    border-left: 0.25rem solid #bb86fc;
+    background-color: #252525;
+    padding: 1rem;
+    border-radius: 0.25rem;
+}
+
+/* Dark Mode Code */
+body.dark-mode code,
+body.dark-mode pre {
+    background-color: #252525;
+    color: #f8f9fa;
+    border: 1px solid #333;
+}
+
+/* Dark Mode Marked Text */
+body.dark-mode mark {
+    background-color: #bb86fc;
+    color: #121212;
+}
+
+/* Dark Mode Spinner */
+body.dark-mode .spinner-border,
+body.dark-mode .spinner-grow {
+    color: #bb86fc;
+}
+
+/* Dark Mode Toasts */
+body.dark-mode .toast {
+    background-color: #252525;
+    border-color: #333;
+}
+
+body.dark-mode .toast-header {
+    background-color: #1e1e1e;
+    color: #f8f9fa;
+    border-color: #333;
+}
+
+/* Dark Mode Horizontal Rules */
+body.dark-mode hr {
+    border-top: 1px solid #444;
+}
+
+/* Enhanced Dark Mode - Additional Improvements */
+
+/* Better visibility for icons */
+body.dark-mode .fas,
+body.dark-mode .far,
+body.dark-mode .fab,
+body.dark-mode .bi {
+    color: inherit;
+}
+
+/* Improved button visibility */
+body.dark-mode .btn {
+    font-weight: 500;
+}
+
+body.dark-mode .btn-sm {
+    font-weight: 500;
+}
+
+/* Improved form labels */
+body.dark-mode label.form-label {
+    color: #e0e0e0;
+    font-weight: 500;
+}
+
+/* Enhanced table visibility */
+body.dark-mode .table {
+    --bs-table-hover-color: #ffffff;
+    --bs-table-hover-bg: rgba(187, 134, 252, 0.1);
+}
+
+body.dark-mode .table th {
+    font-weight: 600;
+}
+
+/* Better card headers */
+body.dark-mode .card-header h5,
+body.dark-mode .card-header h4,
+body.dark-mode .card-header h3 {
+    color: #e0e0e0;
+}
+
+/* Enhanced focus states for accessibility */
+body.dark-mode .form-control:focus,
+body.dark-mode .form-select:focus,
+body.dark-mode .form-check-input:focus,
+body.dark-mode .btn:focus {
+    border-color: #bb86fc;
+    box-shadow: 0 0 0 0.25rem rgba(187, 134, 252, 0.4);
+}
+
+/* Make sure all buttons have visible text */
+body.dark-mode .btn-outline-primary,
+body.dark-mode .btn-outline-secondary,
+body.dark-mode .btn-outline-success,
+body.dark-mode .btn-outline-danger,
+body.dark-mode .btn-outline-warning,
+body.dark-mode .btn-outline-info {
+    border-width: 2px;
+}
+
+/* Improved dropdown menu */
+body.dark-mode .dropdown-menu {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.5);
+}
+
+/* Enhanced visibility for admin sidebar */
+body.dark-mode .admin-sidebar .nav-link {
+    color: #e0e0e0;
+    border-left: 3px solid transparent;
+}
+
+body.dark-mode .admin-sidebar .nav-link:hover {
+    border-left-color: #bb86fc;
+}
+
+body.dark-mode .admin-sidebar .nav-link.active {
+    border-left-color: #bb86fc;
+    font-weight: 600;
+}
+
+/* Better visibility for form controls in dark mode */
+body.dark-mode .form-control,
+body.dark-mode .form-select {
+    border-width: 2px;
+}
+
+/* Enhanced visibility for badges */
+body.dark-mode .badge {
+    font-weight: 600;
+}
+
+/* Improved visibility for links */
+body.dark-mode a:not(.btn):not(.nav-link):not(.dropdown-item):not(.page-link) {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+body.dark-mode a:not(.btn):not(.nav-link):not(.dropdown-item):not(.page-link):hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+/* Enhanced input fields */
+body.dark-mode input[type="text"],
+body.dark-mode input[type="email"],
+body.dark-mode input[type="password"],
+body.dark-mode input[type="number"],
+body.dark-mode textarea {
+    color: #ffffff;
+}
+
+/* Improved visibility for active navigation elements */
+body.dark-mode .navbar-nav .nav-item.active .nav-link,
+body.dark-mode .navbar-nav .nav-item .nav-link.active {
+    color: #bb86fc !important;
+    font-weight: 600;
+}
+
+/* Enhanced visibility for product cards */
+body.dark-mode .product-card .card-title {
+    color: #ffffff;
+    font-weight: 600;
+}
+
+/* Improved visibility for price information */
+body.dark-mode .price,
+body.dark-mode .product-price,
+body.dark-mode .cart-total {
+    color: #03dac6;
+    font-weight: 600;
+}
+
+/* Better visibility for order status badges */
+body.dark-mode .badge.bg-warning {
+    color: #000000;
+    font-weight: 600;
+}
+
+/* Improved contrast for form placeholders */
+body.dark-mode ::placeholder {
+    color: #999999 !important;
+    opacity: 1;
+}
+
+/* Enhanced visibility for buttons with icons */
+body.dark-mode .btn i,
+body.dark-mode .btn .fas,
+body.dark-mode .btn .far,
+body.dark-mode .btn .fab,
+body.dark-mode .btn .bi {
+    color: inherit;
+}
+
+/* Improved focus indicators for interactive elements */
+body.dark-mode a:focus,
+body.dark-mode button:focus,
+body.dark-mode [role="button"]:focus {
+    outline: 2px solid #bb86fc;
+    outline-offset: 2px;
+}
+
+/* Better visibility for form validation states */
+body.dark-mode .was-validated .form-control:valid,
+body.dark-mode .form-control.is-valid {
+    border-color: #03dac6;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%2303dac6' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e");
+}
+
+body.dark-mode .was-validated .form-control:invalid,
+body.dark-mode .form-control.is-invalid {
+    border-color: #cf6679;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23cf6679'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23cf6679' stroke='none'/%3e%3c/svg%3e");
+}
+
+/* Enhanced visibility for active tab navigation */
+body.dark-mode .nav-tabs .nav-link.active {
+    font-weight: 600;
+    border-top-width: 2px;
+}
+
+/* Improved visibility for table headers and cells */
+body.dark-mode .table thead th {
+    font-weight: 600;
+    color: #e0e0e0;
+}
+
+body.dark-mode .table tbody td {
+    color: #e0e0e0;
+}
+
+/* Better contrast for dark mode alerts */
+body.dark-mode .alert-info {
+    background-color: rgba(100, 181, 246, 0.2);
+    color: #e0e0e0;
+    border-color: rgba(100, 181, 246, 0.4);
+}
+
+body.dark-mode .alert-success {
+    background-color: rgba(3, 218, 198, 0.2);
+    color: #e0e0e0;
+    border-color: rgba(3, 218, 198, 0.4);
+}
+
+body.dark-mode .alert-warning {
+    background-color: rgba(255, 183, 77, 0.2);
+    color: #e0e0e0;
+    border-color: rgba(255, 183, 77, 0.4);
+}
+
+body.dark-mode .alert-danger {
+    background-color: rgba(207, 102, 121, 0.2);
+    color: #e0e0e0;
+    border-color: rgba(207, 102, 121, 0.4);
+}
+
+/* Enhanced visibility for disabled elements */
+body.dark-mode .btn:disabled,
+body.dark-mode .form-control:disabled,
+body.dark-mode .form-select:disabled {
+    background-color: #2a2a2a;
+    color: #999999;
+    opacity: 0.8;
+}
+
+/* Better visibility for Bootstrap icons */
+body.dark-mode .bi-trash {
+    color: #cf6679;
+}
+
+body.dark-mode .bi-pencil,
+body.dark-mode .bi-pencil-square {
+    color: #64b5f6;
+}
+
+body.dark-mode .bi-eye {
+    color: #bb86fc;
+}
+
+body.dark-mode .bi-check,
+body.dark-mode .bi-check-circle {
+    color: #03dac6;
+}
+
+/* Enhanced visibility for admin panel */
+body.dark-mode .admin-sidebar {
+    background-color: #1a1a1a;
+    border-right: 1px solid #333;
+}
+
+body.dark-mode .admin-sidebar .nav-link {
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.25rem;
+    border-radius: 0.25rem;
+}
+
+body.dark-mode .admin-sidebar .nav-link:hover {
+    background-color: #252525;
+}
+
+body.dark-mode .admin-sidebar .nav-link.active {
+    background-color: rgba(187, 134, 252, 0.2);
+    color: #bb86fc;
+}
+
+/* Improved visibility for card actions */
+body.dark-mode .card-actions .btn {
+    margin-right: 0.5rem;
+}
+
+/* Enhanced visibility for price elements */
+body.dark-mode .price-tag,
+body.dark-mode .total-price,
+body.dark-mode .product-price {
+    color: #03dac6;
+    font-weight: 700;
+}

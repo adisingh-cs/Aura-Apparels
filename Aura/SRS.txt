@@ -1,0 +1,91 @@
+Software Requirements Specification (SRS) Document  
+Project: AURA APPARELS E-Commerce Platform  
+📅 Version: 1.1  
+📌 Technologies: Django, SQLite3, HTML, CSS, JavaScript, Bootstrap (if necessary)  
+
+---
+
+ 1. Introduction  
+
+ 1.1 Purpose  
+The purpose of this document is to define the functional and non-functional requirements for an e-commerce platform that focuses on selling apparels under the brand name "AURA APPARELS". The platform will include categories like T-Shirts, Hoodies, Oversized T-Shirts, Polo T-Shirts, Sweatshirts, and Varsity Jackets. It will have a modern, minimalistic, and Gen Z-friendly UI and will support customer registration, product browsing, cart management, and admin-controlled order handling.
+
+ 1.2 Scope  
+- Customers can browse products and add them to the cart.  
+- Customers must register/log in to place orders.  
+- Orders will be prepaid only — no returns, no cancellations.  
+- Free shipping with delivery within 8-10 days.  
+- Admins can add/edit/remove products and manage orders.  
+- The UI will feature a unique color palette (Violet, Pink, White, Blue) and Google Fonts (Roboto/Poppins).  
+- The platform will be fully responsive with interactive modals and forms.  
+
+---
+
+ 2. Functional Requirements  
+
+ 2.1 User Roles  
+
+A. Customer (Registered User)  
+- Sign up/log in to access the platform.  
+- View available products.  
+- Add/remove items from the cart.  
+- Proceed to checkout and download the receipt.  
+- Track orders from the profile page.  
+- Download past order receipts.  
+
+B. Admin  
+- Product Management: Add, update, delete products.  
+- Inventory Management: Track stock levels.  
+- Order Management: View, update, and manage orders.  
+- Dashboard Overview: Display total orders pending, total users, total sales, and total products.  
+- Export Data: Export orders, user data, and sales reports in Excel format.  
+
+---
+
+ 2.2 Features & Functionalities  
+
+A. Customer Features  
+- 🛒 Product Listing Page: Browse products with images and details.  
+- 🔍 Search & Filter: Search products by name and category.  
+- 🛍 Cart System: Add/remove items, view cart summary.  
+- ✅ Checkout Process: Upon successful order placement, download a PDF receipt.  
+- 🚚 Order Tracking: Track order status (Pending, Processing, Confirmed, Shipped, Delivered, Cancelled).  
+- 📥 Download Receipts: Download past order receipts from the profile page.  
+
+B. Admin Features  
+- 📦 Manage Products: Perform CRUD operations (Create, Read, Update, Delete).  
+- 📊 Dashboard Overview: Track orders, users, sales, and products.  
+- 🚚 Manage Orders: Change order status to Pending, Processing, Confirmed, Shipped, Delivered, or Cancelled.  
+- 📥 Data Export: Export order, user, and sales data in Excel format.  
+- 📦 Inventory Management: Manage stock levels via a dedicated page.  
+
+---
+
+ 2.3 Additional Features  
+
+- 🌙 Dark Mode: Provide a dark mode toggle for user convenience.  
+- 💰 Currency in INR: All product prices will be displayed in Indian Rupees (₹).  
+- 📧 Contact Page: Only display the email "eternals.hub@gmail.com" for inquiries.  
+
+---
+
+ 3. Non-Functional Requirements  
+
+- UI/UX Design: Modern, minimalistic, and responsive design.  
+- Performance: Fast loading with optimized assets.  
+- Security: Secure authentication using Django.  
+- Data Validation: Prevent invalid data entries.  
+
+---
+
+ 4. Technology Stack  
+
+| Component       | Technology Used  |
+|----------------|-----------------|
+| Backend   | Django (Python)  |
+| Database  | SQLite3          |
+| Frontend  | HTML, CSS, JavaScript |
+| UI Library| Bootstrap (if needed), FontAwesome |
+| Fonts     | Google Fonts (Roboto/Poppins) |
+
+---

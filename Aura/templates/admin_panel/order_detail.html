@@ -1,0 +1,189 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Admin | Order Details{% endblock %}
+
+{% block extra_css %}
+<style>
+    .order-status {
+        font-weight: bold;
+    }
+    .status-Pending {
+        color: #ffc107;
+    }
+    .status-Processing {
+        color: #17a2b8;
+    }
+    .status-Confirmed {
+        color: #6f42c1;
+    }
+    .status-Shipped {
+        color: #007bff;
+    }
+    .status-Delivered {
+        color: #28a745;
+    }
+    .status-Cancelled {
+        color: #dc3545;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Order #{{ order.id }}</h1>
+        <a href="{% url 'admin_orders' %}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back to Orders
+        </a>
+    </div>
+    
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+    
+    <div class="row">
+        <!-- Order Information -->
+        <div class="col-md-8">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Order Information</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Order Date:</strong> {{ order.created_at|date:"F j, Y, g:i a" }}</p>
+                            <p><strong>Customer:</strong> {{ order.full_name }}</p>
+                            <p><strong>Email:</strong> {{ order.email }}</p>
+                            <p><strong>Phone:</strong> {{ order.phone }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Total Amount:</strong> ₹{{ order.total_amount }}</p>
+                            <p><strong>Payment Method:</strong> {{ order.payment_method|title }}</p>
+                            <p><strong>Payment Status:</strong> 
+                                <span class="badge {% if order.payment_status == 'paid' %}bg-success{% else %}bg-warning{% endif %}">
+                                    {{ order.payment_status|title }}
+                                </span>
+                            </p>
+                            <p><strong>Status:</strong> <span class="order-status status-{{ order.order_status }}">{{ order.order_status }}</span></p>
+                            <p><strong>Last Updated:</strong> {{ order.updated_at|date:"F j, Y, g:i a" }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Shipping Address -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Shipping Address</h5>
+                </div>
+                <div class="card-body">
+                    <address>
+                        {{ order.address }}<br>
+                        {{ order.city }}, {{ order.state }}<br>
+                        PIN: {{ order.pincode }}
+                    </address>
+                </div>
+            </div>
+            
+            <!-- Order Items -->
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Order Items</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th class="text-end">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in order_items %}
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                {% if item.product.image %}
+                                                    <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" style="width: 50px; height: 50px; object-fit: cover;" class="me-2">
+                                                {% endif %}
+                                                <div>
+                                                    {{ item.product.name }}
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>₹{{ item.price }}</td>
+                                        <td>{{ item.quantity }}</td>
+                                        <td class="text-end">₹{{ item.get_total }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th colspan="3" class="text-end">Total:</th>
+                                    <th class="text-end">₹{{ order.total_amount }}</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Order Status Management -->
+        <div class="col-md-4">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Update Order Status</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{% url 'update_order_status' order.id %}">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="order_status" class="form-label">Status</label>
+                            <select class="form-select" id="order_status" name="order_status">
+                                <option value="Pending" {% if order.order_status == 'Pending' %}selected{% endif %}>Pending</option>
+                                <option value="Processing" {% if order.order_status == 'Processing' %}selected{% endif %}>Processing</option>
+                                <option value="Confirmed" {% if order.order_status == 'Confirmed' %}selected{% endif %}>Confirmed</option>
+                                <option value="Shipped" {% if order.order_status == 'Shipped' %}selected{% endif %}>Shipped</option>
+                                <option value="Delivered" {% if order.order_status == 'Delivered' %}selected{% endif %}>Delivered</option>
+                                <option value="Cancelled" {% if order.order_status == 'Cancelled' %}selected{% endif %}>Cancelled</option>
+                            </select>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> Update Status
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Customer Information -->
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Customer Information</h5>
+                </div>
+                <div class="card-body">
+                    <p><strong>Name:</strong> {{ order.full_name }}</p>
+                    <p><strong>Username:</strong> {{ order.user.username }}</p>
+                    <p><strong>Email:</strong> {{ order.email }}</p>
+                    <p><strong>Phone:</strong> {{ order.phone }}</p>
+                    <div class="d-grid">
+                        <a href="{% url 'admin_user_detail' order.user.id %}" class="btn btn-outline-primary">
+                            <i class="fas fa-user"></i> View Customer Profile
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

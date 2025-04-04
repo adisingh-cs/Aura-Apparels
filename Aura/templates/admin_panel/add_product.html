@@ -1,0 +1,182 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Admin - Add Product | AURA APPARELS{% endblock %}
+
+{% block extra_css %}
+<style>
+    .admin-sidebar {
+        background-color: #f8f9fa;
+        border-right: 1px solid #dee2e6;
+        min-height: calc(100vh - 56px - 72px);
+    }
+    body.dark-mode .admin-sidebar {
+        background-color: #1e1e1e;
+        border-right: 1px solid #333;
+    }
+    .admin-sidebar .nav-link {
+        color: #495057;
+        border-radius: 0;
+        padding: 0.5rem 1rem;
+    }
+    body.dark-mode .admin-sidebar .nav-link {
+        color: #f8f9fa;
+    }
+    .admin-sidebar .nav-link:hover {
+        background-color: #e9ecef;
+    }
+    body.dark-mode .admin-sidebar .nav-link:hover {
+        background-color: #2a2a2a;
+    }
+    .admin-sidebar .nav-link.active {
+        background-color: #007bff;
+        color: #fff;
+    }
+    body.dark-mode .admin-sidebar .nav-link.active {
+        background-color: #bb86fc;
+        color: #121212;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-3 col-lg-2 d-md-block admin-sidebar">
+            <div class="position-sticky pt-3">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'admin_dashboard' %}">
+                            <i class="fas fa-tachometer-alt me-2"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{% url 'admin_products' %}">
+                            <i class="fas fa-box me-2"></i> Products
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'admin_categories' %}">
+                            <i class="fas fa-tags me-2"></i> Categories
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'admin_orders' %}">
+                            <i class="fas fa-shopping-cart me-2"></i> Orders
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'admin_users' %}">
+                            <i class="fas fa-users me-2"></i> Users
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'admin_inventory' %}">
+                            <i class="fas fa-warehouse me-2"></i> Inventory
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Main content -->
+        <div class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">Add New Product</h1>
+                <div class="btn-toolbar mb-2 mb-md-0">
+                    <a href="{% url 'admin_products' %}" class="btn btn-sm btn-outline-secondary">
+                        <i class="fas fa-arrow-left me-1"></i> Back to Products
+                    </a>
+                </div>
+            </div>
+
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">Product Name</label>
+                                    <input type="text" class="form-control" id="name" name="name" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="slug" class="form-label">Slug</label>
+                                    <input type="text" class="form-control" id="slug" name="slug" required>
+                                    <div class="form-text">A unique URL-friendly identifier (e.g., "blue-cotton-shirt")</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description</label>
+                            <textarea class="form-control" id="description" name="description" rows="4" required></textarea>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="price" class="form-label">Price (₹)</label>
+                                    <input type="number" class="form-control" id="price" name="price" min="0" step="0.01" required>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="category" class="form-label">Category</label>
+                                    <select class="form-select" id="category" name="category" required>
+                                        <option value="" selected disabled>Select a category</option>
+                                        {% for category in categories %}
+                                            <option value="{{ category.id }}">{{ category.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="stock" class="form-label">Stock</label>
+                                    <input type="number" class="form-control" id="stock" name="stock" min="0" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="images" class="form-label">Product Images</label>
+                            <input type="file" class="form-control" id="images" name="images" multiple>
+                            <div class="form-text">You can select multiple images</div>
+                        </div>
+                        
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="is_available" name="is_available" checked>
+                            <label class="form-check-label" for="is_available">Available for sale</label>
+                        </div>
+                        
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="{% url 'admin_products' %}" class="btn btn-secondary me-md-2">Cancel</a>
+                            <button type="submit" class="btn btn-primary">Add Product</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block extra_js %}
+<script>
+    // Automatically generate slug from product name
+    document.getElementById('name').addEventListener('input', function() {
+        const name = this.value;
+        const slug = name.toLowerCase()
+            .replace(/[^\w\s-]/g, '') // Remove special characters
+            .replace(/\s+/g, '-')     // Replace spaces with hyphens
+            .replace(/-+/g, '-');     // Replace multiple hyphens with single hyphen
+        
+        document.getElementById('slug').value = slug;
+    });
+</script>
+{% endblock %}
+
+{% endblock %}

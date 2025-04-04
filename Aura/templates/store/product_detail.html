@@ -1,0 +1,271 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}{{ product.name }} | AURA APPARELS{% endblock %}
+
+{% block extra_css %}
+<style>
+    .main-product-image {
+        width: 100%;
+        height: auto;
+        max-height: 500px;
+        object-fit: contain;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: transform 0.3s ease;
+    }
+
+    .main-product-image:hover {
+        transform: scale(1.05);
+    }
+
+    .thumbnail-gallery {
+        margin-top: 15px;
+    }
+
+    .product-thumbnail {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
+        opacity: 0.7;
+    }
+
+    .product-thumbnail:hover,
+    .product-thumbnail.active {
+        opacity: 1;
+    }
+
+    .product-thumbnail.active {
+        border: 2px solid #007bff;
+    }
+
+    .thumbnail-item {
+        flex: 0 0 auto;
+    }
+
+    .form-select {
+        border-radius: 0.25rem;
+        border: 1px solid #ced4da;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+
+    .form-select:focus {
+        border-color: #86b7fe;
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    }
+
+    body.dark-mode .form-select {
+        background-color: #333;
+        border-color: #444;
+        color: #f8f9fa;
+    }
+
+    body.dark-mode .form-select:focus {
+        border-color: #bb86fc;
+        box-shadow: 0 0 0 0.25rem rgba(187, 134, 252, 0.25);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="my-3">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'shop' %}">Shop</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'category_products' product.category.slug %}">{{ product.category.name }}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ product.name }}</li>
+        </ol>
+    </nav>
+
+    <!-- Product Details -->
+    <div class="row mb-5">
+        <!-- Product Images -->
+        <div class="col-md-6 mb-4">
+            <div class="product-gallery">
+                <div class="main-image-container mb-3">
+                    <img src="{{ product.main_image.url|default:product.main_image_url|default:product.safe_image_url|default:'/static/images/no-image.png' }}"
+                         class="main-product-image img-fluid"
+                         alt="{{ product.name }}"
+                         id="mainProductImage"
+                         onerror="this.src='{% static 'images/no-image.png' %}'">
+                </div>
+                <div class="thumbnail-gallery">
+                    <div class="d-flex gap-2 overflow-auto pb-2">
+                        <div class="thumbnail-item">
+                            <img src="{{ product.main_image.url|default:product.main_image_url|default:product.safe_image_url|default:'/static/images/no-image.png' }}"
+                                 class="img-thumbnail product-thumbnail active"
+                                 alt="{{ product.name }}"
+                                 onclick="changeMainImage(this)"
+                                 onerror="this.src='{% static 'images/no-image.png' %}'">
+                        </div>
+                        {% for image in product_images %}
+                        <div class="thumbnail-item">
+                            <img src="{{ image.image.url|default:image.safe_image_url|default:'/static/images/no-image.png' }}"
+                                 class="img-thumbnail product-thumbnail"
+                                 alt="{{ product.name }}"
+                                 onclick="changeMainImage(this)"
+                                 onerror="this.src='{% static 'images/no-image.png' %}'">
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Info -->
+        <div class="col-md-6" style="margin-top: -30px;">
+            <div class="product-info p-4">
+                <h1 class="mb-3">{{ product.name }}</h1>
+                <p class="h3 text-primary mb-4 product-price">₹{{ product.price }}</p>
+
+                <div class="mb-4">
+                    <h5 class="text-muted mb-3">Product Details</h5>
+                    <div class="product-description">
+                        {{ product.description|linebreaks }}
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <h5 class="text-muted mb-3">Category</h5>
+                    <p>
+                        <a href="{% url 'category_products' product.category.slug %}" class="text-decoration-none">
+                            {{ product.category.name }}
+                        </a>
+                    </p>
+                </div>
+
+                <div class="mb-4">
+                    <h5 class="text-muted mb-3">Availability</h5>
+                    {% if product.is_available %}
+                        {% if product.stock > 10 %}
+                            <p class="text-success"><i class="fas fa-check-circle me-2"></i>In Stock</p>
+                        {% else %}
+                            <p class="text-warning"><i class="fas fa-exclamation-circle me-2"></i>Only {{ product.stock }} left</p>
+                        {% endif %}
+                    {% else %}
+                        <p class="text-danger"><i class="fas fa-times-circle me-2"></i>Out of Stock</p>
+                    {% endif %}
+                </div>
+
+                {% if product.is_available %}
+                <form action="{% url 'add_to_cart' product.id %}" method="post" class="mb-4">
+                    {% csrf_token %}
+                    <div class="row g-3 align-items-center">
+                        <div class="col-auto">
+                            <label for="quantity" class="col-form-label">Quantity:</label>
+                        </div>
+                        <div class="col-auto">
+                            <input type="number" id="quantity" name="quantity" class="form-control" value="1" min="1" max="{{ product.stock }}">
+                        </div>
+                        <div class="col-auto">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-cart-plus me-1"></i> Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                {% else %}
+                    <button class="btn btn-secondary mb-4" disabled>
+                        <i class="fas fa-ban me-1"></i> Out of Stock
+                    </button>
+                {% endif %}
+
+                <!-- Copy Link Button -->
+                <div class="mb-4">
+                    <h5>Share:</h5>
+                    <div class="input-group">
+                        <input type="text" id="productLink" class="form-control" value="{{ request.scheme }}://{{ request.get_host }}{{ request.path }}" readonly>
+                        <button class="btn btn-outline-primary" type="button" onclick="copyProductLink()">
+                            <i class="fas fa-copy me-1"></i> Copy Link
+                        </button>
+                    </div>
+                    <div id="linkCopiedAlert" class="alert alert-success mt-2 d-none" role="alert">
+                        <i class="fas fa-check-circle me-1"></i> Link copied!
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Related Products -->
+    {% if related_products %}
+    <div class="mt-5">
+        <h3 class="mb-4">Related Products</h3>
+        <div class="row">
+            {% for related in related_products %}
+            <div class="col-6 col-md-3 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <a href="{% url 'product_detail' related.slug %}">
+                        <img src="{{ related.main_image_url|default:related.safe_image_url|default:'/static/images/no-image.png' }}"
+                             class="card-img-top"
+                             alt="{{ related.name }}"
+                             style="height: 200px; object-fit: cover;"
+                             onerror="this.src='{% static 'images/no-image.png' %}'">
+                    </a>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ related.name }}</h5>
+                        <p class="card-text product-price">₹{{ related.price }}</p>
+                    </div>
+                    <div class="card-footer bg-transparent border-top-0">
+                        <div class="d-grid gap-2">
+                            <a href="{% url 'product_detail' related.slug %}" class="btn btn-outline-primary">
+                                <i class="fas fa-eye me-1"></i> View Details
+                            </a>
+                            {% if related.is_available %}
+                            <form action="{% url 'add_to_cart' related.id %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-primary w-100">
+                                    <i class="fas fa-cart-plus me-1"></i> Add to Cart
+                                </button>
+                            </form>
+                            {% else %}
+                            <button class="btn btn-secondary" disabled>
+                                <i class="fas fa-ban me-1"></i> Out of Stock
+                            </button>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function changeMainImage(thumbnail) {
+        const newSrc = thumbnail.src;
+        const mainImage = document.getElementById('mainProductImage');
+        mainImage.src = newSrc;
+
+        document.querySelectorAll('.product-thumbnail').forEach(thumb => {
+            thumb.classList.remove('active');
+        });
+        thumbnail.classList.add('active');
+    }
+
+    function copyProductLink() {
+        const linkInput = document.getElementById("productLink");
+        const alertElement = document.getElementById("linkCopiedAlert");
+        linkInput.select();
+        linkInput.setSelectionRange(0, 99999);
+        navigator.clipboard.writeText(linkInput.value)
+            .then(() => {
+                alertElement.classList.remove("d-none");
+                setTimeout(() => alertElement.classList.add("d-none"), 3000);
+            })
+            .catch(() => {
+                document.execCommand('copy');
+                alertElement.classList.remove("d-none");
+                setTimeout(() => alertElement.classList.add("d-none"), 3000);
+            });
+    }
+</script>
+{% endblock %}

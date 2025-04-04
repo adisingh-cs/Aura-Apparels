@@ -1,0 +1,99 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}AURA APPARELS | Home{% endblock %}
+
+{% block content %}
+    <!-- Featured Products -->
+    <section class="featured-products">
+        <h2 class="text-center mb-4" id="mytxt">Featured Products</h2>
+        <div class="row">
+            {% for product in featured_products %}
+            <div class="col-md-3 mb-4">
+                <div class="card h-100">
+                    <img src="{{ product.main_image_url|default:product.safe_image_url|default:'/static/images/no-image.png' }}" 
+                         class="card-img-top" 
+                         alt="{{ product.name }}" 
+                         onerror="this.src='{% static 'images/no-image.png' %}'">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <p class="card-text text-muted">{{ product.category.name }}</p>
+                        <p class="card-text fw-bold">₹{{ product.price }}</p>
+                    </div>
+                    <div class="card-footer bg-white border-top-0">
+                        <div class="d-grid gap-2">
+                            <a href="{% url 'product_detail' product.slug %}" class="btn btn-outline-primary">View Details</a>
+                            {% if user.is_authenticated %}
+                                <a href="{% url 'add_to_cart' product.id %}" class="btn btn-primary">Add to Cart</a>
+                            {% else %}
+                                <a href="{% url 'login' %}" class="btn btn-primary">Login to Buy</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center">
+                <p>No products available.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    
+    <!-- Featured Categories -->
+    <section class="py-5">
+        <h2 class="text-center mb-4">Featured Categories</h2>
+        <div class="row">
+            {% for category in categories %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <img src="{{ category.safe_image_url|default:'/static/images/no-image.png' }}" 
+                         class="card-img-top" 
+                         alt="{{ category.name }}" 
+                         style="height: 200px; object-fit: cover;" 
+                         onerror="this.src='{% static 'images/no-image.png' %}'">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">{{ category.name }}</h5>
+                        <p class="card-text">{{ category.description|truncatechars:100 }}</p>
+                        <a href="{% url 'category_products' category.slug %}" class="btn btn-outline-primary">View Products</a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center">
+                <p>No categories available.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="py-5 bg-light rounded">
+        <div class="container">
+            <h2 class="text-center mb-4">Why Choose AURA APPARELS?</h2>
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="text-center">
+                        <i class="fas fa-truck fa-3x mb-3 text-primary"></i>
+                        <h4>Fast Shipping</h4>
+                        <p>Fast shipping on all orders with delivery within 8-10 days.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="text-center">
+                        <i class="fas fa-tshirt fa-3x mb-3 text-primary"></i>
+                        <h4>Quality Products</h4>
+                        <p>High-quality apparel designed for the modern generation.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="text-center">
+                        <i class="fas fa-shield-alt fa-3x mb-3 text-primary"></i>
+                        <h4>Secure Payments</h4>
+                        <p>Safe and secure payment options for a worry-free shopping experience.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

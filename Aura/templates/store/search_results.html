@@ -1,0 +1,153 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Search Results for "{{ query }}" | AURA APPARELS{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="my-3">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'shop' %}">Shop</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Search Results</li>
+        </ol>
+    </nav>
+    
+    <!-- Search Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="display-5">Search Results for "{{ query }}"</h1>
+            <p class="lead">{{ products.count }} products found</p>
+        </div>
+    </div>
+    
+    <!-- Sorting and Filtering -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <form action="{% url 'search' %}" method="GET" class="d-flex">
+                <input class="form-control me-2" type="search" name="q" placeholder="Search products..." value="{{ query }}" aria-label="Search">
+                <button class="btn btn-outline-primary" type="submit">
+                    <i class="fas fa-search"></i>
+                </button>
+            </form>
+        </div>
+        <div class="col-md-6 text-end">
+            <div class="btn-group">
+                <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    Sort By
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="?q={{ query }}&sort=name">Name (A-Z)</a></li>
+                    <li><a class="dropdown-item" href="?q={{ query }}&sort=-name">Name (Z-A)</a></li>
+                    <li><a class="dropdown-item" href="?q={{ query }}&sort=price">Price (Low to High)</a></li>
+                    <li><a class="dropdown-item" href="?q={{ query }}&sort=-price">Price (High to Low)</a></li>
+                    <li><a class="dropdown-item" href="?q={{ query }}&sort=-created_at">Newest First</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Products Grid -->
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 mb-4">
+        {% for product in products %}
+            <div class="col">
+                <div class="card h-100 product-card">
+                    <a href="{% url 'product_detail' product.slug %}">
+                        <img src="{{ product.main_image_url|default:product.safe_image_url|default:'/static/images/no-image.png' }}" class="card-img-top" alt="{{ product.name }}" onerror="this.src='{% static 'images/no-image.png' %}'">
+                    </a>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <p class="card-text product-price">₹{{ product.price }}</p>
+                        <p class="card-text"><small class="text-muted">{{ product.category.name }}</small></p>
+                    </div>
+                    <div class="card-footer bg-transparent border-top-0">
+                        <div class="d-grid gap-2">
+                            <a href="{% url 'product_detail' product.slug %}" class="btn btn-outline-primary">View Details</a>
+                            {% if product.is_available %}
+                                <a href="{% url 'add_to_cart' product.id %}" class="btn btn-primary">Add to Cart</a>
+                            {% else %}
+                                <button class="btn btn-secondary" disabled>Out of Stock</button>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="col-12">
+                <div class="alert alert-info">
+                    <h5 class="alert-heading">No products found!</h5>
+                    <p>We couldn't find any products matching "{{ query }}". Please try a different search term or browse our categories.</p>
+                    <hr>
+                    <p class="mb-0">
+                        <a href="{% url 'shop' %}" class="alert-link">Browse all products</a>
+                    </p>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    
+    <!-- Pagination -->
+    {% if products.has_other_pages %}
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                {% if products.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?q={{ query }}&page=1" aria-label="First">
+                            <span aria-hidden="true">&laquo;&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?q={{ query }}&page={{ products.previous_page_number }}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" aria-label="First">
+                            <span aria-hidden="true">&laquo;&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                {% endif %}
+                
+                {% for i in products.paginator.page_range %}
+                    {% if products.number == i %}
+                        <li class="page-item active"><a class="page-link" href="#">{{ i }}</a></li>
+                    {% elif i > products.number|add:'-3' and i < products.number|add:'3' %}
+                        <li class="page-item"><a class="page-link" href="?q={{ query }}&page={{ i }}">{{ i }}</a></li>
+                    {% endif %}
+                {% endfor %}
+                
+                {% if products.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?q={{ query }}&page={{ products.next_page_number }}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?q={{ query }}&page={{ products.paginator.num_pages }}" aria-label="Last">
+                            <span aria-hidden="true">&raquo;&raquo;</span>
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" aria-label="Last">
+                            <span aria-hidden="true">&raquo;&raquo;</span>
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    {% endif %}
+</div>
+{% endblock %}

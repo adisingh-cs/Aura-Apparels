@@ -1,0 +1,62 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Order History | Aura Apparels{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">Order History</h1>
+    
+    <div class="card">
+        <div class="card-body">
+            {% if orders %}
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Date</th>
+                            <th>Items</th>
+                            <th>Total Amount</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in orders %}
+                        <tr>
+                            <td>#{{ order.id }}</td>
+                            <td>{{ order.created_at|date:"M d, Y" }}</td>
+                            <td>{{ order.get_item_count }} item(s)</td>
+                            <td>₹{{ order.total_amount }}</td>
+                            <td>
+                                <span class="badge {% if order.order_status == 'Delivered' %}bg-success{% elif order.order_status == 'Pending' %}bg-warning{% elif order.order_status == 'Cancelled' %}bg-danger{% else %}bg-info{% endif %}">
+                                    {{ order.order_status }}
+                                </span>
+                            </td>
+                            <td>
+                                <div class="btn-group">
+                                    <a href="{% url 'order_detail' order.id %}" class="btn btn-sm btn-primary">View Details</a>
+                                    <a href="{% url 'download_receipt' order.id %}" class="btn btn-sm btn-outline-secondary">Receipt</a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="text-center py-5">
+                <div class="mb-4">
+                    <i class="bi bi-bag-x" style="font-size: 5rem;"></i>
+                </div>
+                <h3>No orders found</h3>
+                <p class="text-muted">You haven't placed any orders yet.</p>
+                <a href="{% url 'shop' %}" class="btn btn-primary mt-3">
+                    Start Shopping
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

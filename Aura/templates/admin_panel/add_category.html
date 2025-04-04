@@ -1,0 +1,181 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Admin - Add Category | AURA APPARELS{% endblock %}
+
+{% block extra_css %}
+<style>
+    .admin-sidebar {
+        background-color: #f8f9fa;
+        border-right: 1px solid #dee2e6;
+        min-height: calc(100vh - 56px - 72px);
+    }
+    body.dark-mode .admin-sidebar {
+        background-color: #1e1e1e;
+        border-right: 1px solid #333;
+    }
+    .admin-sidebar .nav-link {
+        color: #495057;
+        border-radius: 0;
+        padding: 0.5rem 1rem;
+    }
+    body.dark-mode .admin-sidebar .nav-link {
+        color: #f8f9fa;
+    }
+    .admin-sidebar .nav-link:hover {
+        background-color: #e9ecef;
+    }
+    body.dark-mode .admin-sidebar .nav-link:hover {
+        background-color: #2a2a2a;
+    }
+    .admin-sidebar .nav-link.active {
+        background-color: #007bff;
+        color: #fff;
+    }
+    body.dark-mode .admin-sidebar .nav-link.active {
+        background-color: #bb86fc;
+        color: #121212;
+    }
+    .category-image-preview {
+        max-width: 200px;
+        max-height: 200px;
+        object-fit: contain;
+        margin-top: 10px;
+        border-radius: 5px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-3 col-lg-2 d-md-block admin-sidebar">
+            <div class="position-sticky pt-3">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'admin_dashboard' %}">
+                            <i class="fas fa-tachometer-alt me-2"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'admin_products' %}">
+                            <i class="fas fa-box me-2"></i> Products
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{% url 'admin_categories' %}">
+                            <i class="fas fa-tags me-2"></i> Categories
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'admin_orders' %}">
+                            <i class="fas fa-shopping-cart me-2"></i> Orders
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'admin_users' %}">
+                            <i class="fas fa-users me-2"></i> Users
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'admin_inventory' %}">
+                            <i class="fas fa-warehouse me-2"></i> Inventory
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Main content -->
+        <div class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">Add New Category</h1>
+                <div class="btn-toolbar mb-2 mb-md-0">
+                    <a href="{% url 'admin_categories' %}" class="btn btn-sm btn-outline-secondary">
+                        <i class="fas fa-arrow-left me-1"></i> Back to Categories
+                    </a>
+                </div>
+            </div>
+
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">Category Name</label>
+                                    <input type="text" class="form-control" id="name" name="name" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="slug" class="form-label">Slug</label>
+                                    <input type="text" class="form-control" id="slug" name="slug" required>
+                                    <div class="form-text">A unique URL-friendly identifier (e.g., "mens-shirts")</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description</label>
+                            <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="image" class="form-label">Category Image</label>
+                            <input type="file" class="form-control" id="image" name="image" accept="image/*">
+                            <div class="form-text">Upload an image for this category (optional)</div>
+                            <div id="imagePreviewContainer" class="mt-2" style="display: none;">
+                                <img id="imagePreview" class="category-image-preview" src="#" alt="Category Image Preview">
+                            </div>
+                        </div>
+                        
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="{% url 'admin_categories' %}" class="btn btn-secondary me-md-2">Cancel</a>
+                            <button type="submit" class="btn btn-primary">Add Category</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block extra_js %}
+<script>
+    // Automatically generate slug from category name
+    document.getElementById('name').addEventListener('input', function() {
+        const name = this.value;
+        const slug = name.toLowerCase()
+            .replace(/[^\w\s-]/g, '') // Remove special characters
+            .replace(/\s+/g, '-')     // Replace spaces with hyphens
+            .replace(/-+/g, '-');     // Replace multiple hyphens with single hyphen
+        
+        document.getElementById('slug').value = slug;
+    });
+    
+    // Image preview functionality
+    document.getElementById('image').addEventListener('change', function() {
+        const previewContainer = document.getElementById('imagePreviewContainer');
+        const preview = document.getElementById('imagePreview');
+        
+        if (this.files && this.files[0]) {
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+                previewContainer.style.display = 'block';
+            }
+            
+            reader.readAsDataURL(this.files[0]);
+        } else {
+            preview.src = '#';
+            previewContainer.style.display = 'none';
+        }
+    });
+</script>
+{% endblock %}
+
+{% endblock %}

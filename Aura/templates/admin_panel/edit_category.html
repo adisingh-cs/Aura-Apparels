@@ -1,0 +1,141 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Admin | Edit Category{% endblock %}
+
+{% block extra_css %}
+<style>
+    .category-image-preview {
+        max-width: 200px;
+        max-height: 200px;
+        object-fit: contain;
+        margin-top: 10px;
+        border-radius: 5px;
+    }
+    
+    .form-group {
+        margin-bottom: 1rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Edit Category</h1>
+        <a href="{% url 'admin_categories' %}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back to Categories
+        </a>
+    </div>
+    
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+    
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="name" class="form-label">Category Name <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="name" name="name" value="{{ category.name }}" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="slug" class="form-label">Slug <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="slug" name="slug" value="{{ category.slug }}" required>
+                            <small class="text-muted">Used in URLs. Should be unique and contain only letters, numbers, and hyphens.</small>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="image" class="form-label">Category Image</label>
+                            <input type="file" class="form-control" id="image" name="image" accept="image/*">
+                            <small class="text-muted">Leave empty to keep the current image.</small>
+                            
+                            {% if category.image %}
+                                <div class="mt-2">
+                                    <label>Current Image:</label>
+                                    <img src="{{ category.image.url }}" alt="{{ category.name }}" class="category-image-preview d-block">
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="description" class="form-label">Description</label>
+                    <textarea class="form-control" id="description" name="description" rows="4">{{ category.description }}</textarea>
+                </div>
+                
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                    <a href="{% url 'admin_categories' %}" class="btn btn-secondary me-md-2">
+                        Cancel
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Auto-generate slug from category name
+    document.getElementById('name').addEventListener('keyup', function() {
+        const nameValue = this.value;
+        const slugValue = nameValue
+            .toLowerCase()
+            .replace(/[^\w\s-]/g, '')
+            .replace(/[\s_-]+/g, '-')
+            .replace(/^-+|-+$/g, '');
+        
+        document.getElementById('slug').value = slugValue;
+    });
+    
+    // Image preview
+    document.getElementById('image').addEventListener('change', function() {
+        if (this.files && this.files[0]) {
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                const previewContainer = document.createElement('div');
+                previewContainer.className = 'mt-2';
+                
+                const previewLabel = document.createElement('label');
+                previewLabel.textContent = 'New Image Preview:';
+                
+                const previewImage = document.createElement('img');
+                previewImage.src = e.target.result;
+                previewImage.className = 'category-image-preview d-block';
+                previewImage.alt = 'Category Preview';
+                
+                previewContainer.appendChild(previewLabel);
+                previewContainer.appendChild(previewImage);
+                
+                // Remove old preview if exists
+                const oldPreview = document.querySelector('.new-image-preview');
+                if (oldPreview) {
+                    oldPreview.remove();
+                }
+                
+                previewContainer.classList.add('new-image-preview');
+                document.getElementById('image').parentNode.appendChild(previewContainer);
+            };
+            
+            reader.readAsDataURL(this.files[0]);
+        }
+    });
+</script>
+{% endblock %}
