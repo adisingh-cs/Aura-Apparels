@@ -21,9 +21,7 @@
             <h1 class="display-5">{{ category.name }}</h1>
             <p class="lead">{{ category.description }}</p>
         </div>
-        <div class="col-md-4 text-end">
-            <img src="{{ category.safe_image_url }}" alt="{{ category.name }}" class="img-fluid rounded" style="max-height: 150px;">
-        </div>
+        <img src="{{ category.safe_image_url }}" alt="{{ category.name }}" class="img-fluid rounded" style="height: 150px; width: 100%; object-fit: cover;">
     </div>
     
     <!-- Sorting and Filtering -->

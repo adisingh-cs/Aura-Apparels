@@ -103,19 +103,20 @@ def add_product(request):
         )
         
         # Handle image uploads
+        # Handle image uploads
         images = request.FILES.getlist('images')
         if images:
+            # Set the first image as main image
             product.main_image = images[0]
-
-        
-        product.save()
-        
-        # Create ProductImage objects for additional images
-        for image in images[1:]:
-            ProductImage.objects.create(
-                product=product,
-                image=image
-            )
+            product.save()
+            
+            # Create ProductImage objects for all images including the first one
+            for image in images:
+                ProductImage.objects.create(
+                    product=product,
+                    image=image,
+                    is_primary=image == images[0]  # Set first image as primary
+                )
             
         messages.success(request, 'Product added successfully.')
         return redirect('admin_products')
